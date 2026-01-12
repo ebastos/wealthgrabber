@@ -1,0 +1,60 @@
+---
+# Pre-commit hooks configuration for wealthgrabber
+# Run: pre-commit install
+# Test: pre-commit run --all-files
+
+repos:
+  # Ruff: Python linter and formatter (replaces black, isort, flake8, etc.)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.2
+    hooks:
+      # Linting: Detect code issues, style violations, unused imports
+      - id: ruff
+        args: [--fix]
+
+      # Formatting: Auto-format code (equivalent to `black`)
+      - id: ruff-format
+
+  # isort: Import sorting (compatible with Ruff)
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: [--profile=black]  # Compatible with Ruff's formatting
+
+  # YAML linting: Validate YAML syntax and structure
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: [--strict]
+
+  # Trailing whitespace: Remove trailing spaces from all files
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # Trim trailing whitespace
+      - id: trailing-whitespace
+
+      # Ensure files end with a newline
+      - id: end-of-file-fixer
+
+      # Prevent giant files from being committed
+      - id: check-added-large-files
+        args: [--maxkb=1000]  # Warn on files > 1MB
+
+      # Prevent merge conflict markers from being committed
+      - id: check-merge-conflict
+
+      # Validate JSON files
+      - id: check-json
+
+      # Validate TOML files
+      - id: check-toml
+
+      # Validate Python syntax
+      - id: check-ast
+
+# Configuration for specific tools
+default_language_version:
+  python: "3.12"
